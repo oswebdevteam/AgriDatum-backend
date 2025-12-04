@@ -2,6 +2,7 @@ cat > .gitignore << EOL
 # Dependencies
 node_modules/
 package-lock.json
+bun.lock
 
 # Environment variables
 .env

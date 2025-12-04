@@ -1,4 +1,3 @@
-// src/routes/harvest.routes.ts
 import { Router } from 'express';
 import { harvestController } from '../controllers/harvest.controller.js';
 import { validateHarvestSubmission } from '../middleware/validation.middleware.js';

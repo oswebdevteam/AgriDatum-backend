@@ -1,9 +1,9 @@
-// src/index.ts
 import express, { type Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
 import { harvestRoutes } from './routes/harvest.routes.js';
+import { keysRoutes } from './routes/keys.routes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import { pool, initializeDatabase } from './config/database.js';
 
@@ -32,6 +32,7 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/api/harvest', harvestRoutes);
+app.use('/api/keys', keysRoutes)
 
 // Error handling
 app.use(errorHandler);
@@ -85,6 +86,7 @@ const startServer = async () => {
       console.log(`   POST /api/harvest/verify`);
       console.log(`   GET  /api/harvest/records/:farmerId`);
       console.log(`   GET  /api/harvest/records`);
+      console.log(`   POST  /api/keys/generate`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);

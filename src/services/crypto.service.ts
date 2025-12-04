@@ -1,6 +1,4 @@
-// src/services/crypto.service.ts
 import * as crypto from 'crypto';
-import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 
 export interface HarvestData {
   farmerId: string;
@@ -12,19 +10,26 @@ export interface HarvestData {
 }
 
 export class CryptoService {
-  /**
-   * Generate key pair for farmer
-   */
   static generateKeyPair(): {
     publicKey: string;
     privateKey: string;
   } {
     const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519', {
-      publicKeyEncoding: { type: 'spki', format: 'hex' },
-      privateKeyEncoding: { type: 'pkcs8', format: 'hex' },
-    }) as unknown as { publicKey: string; privateKey: string };
+      publicKeyEncoding: { 
+        type: 'spki', 
+        format: 'der'  
+      },
+      privateKeyEncoding: { 
+        type: 'pkcs8', 
+        format: 'der' 
+      },
+    });
 
-    return { publicKey, privateKey };
+    // Convert Buffer to hex string
+    return { 
+      publicKey: publicKey.toString('hex'), 
+      privateKey: privateKey.toString('hex') 
+    };
   }
 
   /**
