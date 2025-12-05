@@ -5,7 +5,7 @@ import { sha256 } from 'js-sha256';
 export class KeysController {
   static async generateKeys(req: Request, res: Response) {
     try {
-      const { seedInput } = req.body;
+      const { seedInput, harvestData } = req.body;
 
       if (!seedInput || typeof seedInput !== 'string') {
         return res.status(400).json({
@@ -18,6 +18,15 @@ export class KeysController {
       const farmerId = sha256(seedInput).slice(0, 16);
       
       const farmerAddress = cryptoService.generateFarmerAddress(publicKey, true);
+
+      let signature: string | undefined;
+      if (harvestData) {
+        try {
+          signature = cryptoService.signData(harvestData, privateKey);
+        } catch (error) {
+          console.error('Failed to sign data:', error);
+        }
+      }
       
       // Only public key and address are returned to the client
       return res.json({
@@ -25,6 +34,7 @@ export class KeysController {
         publicKey,
         farmerAddress,
         farmerId,
+        signature
       });
     } catch (error) {
       console.error('Key generation error:', error);
