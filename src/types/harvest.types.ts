@@ -1,4 +1,3 @@
-// src/types/harvest.types.ts
 export interface HarvestRecord {
     id: number;
     farmer_id: string;

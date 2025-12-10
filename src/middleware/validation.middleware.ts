@@ -1,4 +1,3 @@
-// src/middleware/validation.middleware.ts
 import type { Request, Response, NextFunction } from 'express';
 
 export const validateHarvestSubmission = (
@@ -18,35 +17,35 @@ export const validateHarvestSubmission = (
 
   const errors: string[] = [];
 
-  // Validate farmerId
+  // Validate data inputed by user
   if (!farmerId || typeof farmerId !== 'string' || farmerId.trim().length === 0) {
     errors.push('farmerId is required and must be a non-empty string');
   }
 
-  // Validate phoneNumber
+  
   if (!phoneNumber || typeof phoneNumber !== 'string') {
     errors.push('phoneNumber is required');
   } else if (!/^\+?[\d\s\-()]+$/.test(phoneNumber)) {
     errors.push('phoneNumber format is invalid');
   }
 
-  // Validate plotLocation
+  
   if (!plotLocation || typeof plotLocation !== 'string' || plotLocation.trim().length === 0) {
     errors.push('plotLocation is required and must be a non-empty string');
   }
 
-  // Validate cropType
+  
   if (!cropType || typeof cropType !== 'string' || cropType.trim().length === 0) {
     errors.push('cropType is required and must be a non-empty string');
   }
 
-  // Validate weightKg
+  
   const weight = parseFloat(weightKg);
   if (isNaN(weight) || weight <= 0) {
     errors.push('weightKg must be a positive number');
   }
 
-  // Validate timestamp
+  
   if (!timestamp) {
     errors.push('timestamp is required');
   } else {
@@ -56,7 +55,7 @@ export const validateHarvestSubmission = (
     }
   }
 
-  // Validate publicKey
+  
   if (!publicKey || typeof publicKey !== 'string') {
     errors.push('publicKey is required');
   } else if (!/^[0-9a-fA-F]{64,}$/.test(publicKey)) {

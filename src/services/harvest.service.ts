@@ -1,4 +1,3 @@
-// src/services/harvest.service.ts
 import { pool } from '../config/database.js';
 import type { HarvestRecord } from '../types/harvest.types.js';
 

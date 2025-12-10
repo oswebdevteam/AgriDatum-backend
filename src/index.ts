@@ -42,46 +42,46 @@ const startServer = async () => {
   try {
     // Test database connection
     await pool.query('SELECT NOW()');
-    console.log('✅ Database connected successfully');
+    console.log(' Database connected successfully');
 
     // Initialize database tables
     await initializeDatabase();
 
     // Verify blockchain configuration
     if (!process.env.BLOCKFROST_PROJECT_ID) {
-      console.warn('⚠️  BLOCKFROST_PROJECT_ID not set - blockchain features disabled');
+      console.warn('  BLOCKFROST_PROJECT_ID not set - blockchain features disabled');
     } else {
-      console.log('✅ Blockchain integration enabled');
+      console.log(' Cardano integration enabled');
       
       // Test blockchain service initialization
       try {
         const { blockfrostService } = await import('./services/blockfrost.service.js');
         const companyAddress = await blockfrostService.getCompanyAddress();
-        console.log('✅ Company wallet initialized:', companyAddress);
+        console.log(' Company wallet initialized:', companyAddress);
         
         const balance = await blockfrostService.getWalletBalance();
         if (balance) {
           const adaBalance = parseInt(balance.amount[0]?.quantity || '0') / 1_000_000;
-          console.log(`💰 Wallet balance: ${adaBalance} ADA`);
+          console.log(` Wallet balance: ${adaBalance} ADA`);
           
           if (adaBalance < 10) {
-            console.warn('⚠️  Low wallet balance. Get test ADA from: https://docs.cardano.org/cardano-testnet/tools/faucet/');
+            console.warn('  Low wallet balance. Get test ADA from: https://docs.cardano.org/cardano-testnet/tools/faucet/');
           }
         }
       } catch (walletError: any) {
-        console.error('❌ Blockchain initialization failed:', walletError.message);
-        console.log('📝 Please check your COMPANY_WALLET_MNEMONIC in .env');
+        console.error(' Blockchain initialization failed:', walletError.message);
+        console.log(' Please check your COMPANY_WALLET_MNEMONIC in .env');
       }
     }
 
     if (!process.env.COMPANY_WALLET_MNEMONIC) {
-      console.warn('⚠️  COMPANY_WALLET_MNEMONIC not set - blockchain submissions will fail');
+      console.warn('  COMPANY_WALLET_MNEMONIC not set - blockchain submissions will fail');
     }
 
     // Start server
     app.listen(PORT, () => {
-      console.log(`🚀 AgriDatum backend running on port ${PORT}`);
-      console.log(`📡 API endpoints:`);
+      console.log(` AgriDatum backend running on port ${PORT}`);
+      console.log(` API endpoints:`);
       console.log(`   POST /api/harvest/submit`);
       console.log(`   POST /api/harvest/verify`);
       console.log(`   GET  /api/harvest/records/:farmerId`);
@@ -89,7 +89,7 @@ const startServer = async () => {
       console.log(`   POST  /api/keys/generate`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error(' Failed to start server:', error);
     process.exit(1);
   }
 };

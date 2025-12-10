@@ -1,14 +1,9 @@
-// src/controllers/harvest.controller.ts
 import type { Request, Response } from 'express';
 import { pool } from '../config/database.js';
 import { blockfrostService } from '../services/blockfrost.service.js';
 import { cryptoService } from '../services/crypto.service.js';
 
 export class HarvestController {
-  /**
-   * POST /api/harvest/submit
-   * Submit harvest data with blockchain integration
-   */
   static async submitHarvest(req: Request, res: Response) {
     const client = await pool.connect();
     
@@ -132,10 +127,6 @@ export class HarvestController {
     }
   }
 
-  /**
-   * POST /api/harvest/verify
-   * Verify harvest data signature and blockchain record
-   */
   static async verifyHarvest(req: Request, res: Response) {
     try {
       const { recordId, transactionHash } = req.body;
@@ -227,10 +218,6 @@ export class HarvestController {
     }
   }
 
-  /**
-   * GET /api/harvest/records/:farmerId
-   * Get all harvest records for a farmer
-   */
   static async getRecordsByFarmer(req: Request, res: Response) {
     try {
       const { farmerId } = req.params;
@@ -275,10 +262,6 @@ export class HarvestController {
     }
   }
 
-  /**
-   * GET /api/harvest/records
-   * Get all harvest records with optional filters
-   */
   static async getAllRecords(req: Request, res: Response) {
     try {
       const {

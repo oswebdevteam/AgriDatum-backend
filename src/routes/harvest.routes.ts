@@ -6,7 +6,7 @@ const router: Router = Router();
 
 /**
  * POST /api/harvest/submit
- * Submit new harvest record with blockchain integration
+ * Submit new harvest record with cardano integration
  */
 router.post('/submit', validateHarvestSubmission, harvestController.submitHarvest);
 

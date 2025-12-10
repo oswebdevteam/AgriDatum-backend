@@ -1,7 +1,6 @@
-// src/services/blockfrost.service.ts
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 import * as bip39 from 'bip39';
-import { blake2b } from 'blakejs';  // ✅ CHANGED - pure JS, no compilation needed
+import { blake2b } from 'blakejs';  
 import { createRequire } from 'module';
 
 // Use CommonJS require for Cardano WASM
@@ -199,7 +198,7 @@ export class BlockfrostService {
       const outputAddr = CSL.Address.from_bech32(this.companyWallet.address);
       txBuilder.add_change_if_needed(outputAddr);
 
-      // ✅ FIXED: Build and hash transaction properly with blakejs
+      //FIXED: Build and hash transaction properly with blakejs
       const txBody = txBuilder.build();
       const bodyBytes = txBody.to_bytes();
 

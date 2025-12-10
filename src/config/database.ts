@@ -1,4 +1,3 @@
-// src/config/database.ts
 import pkg from 'pg';
 const { Pool } = pkg;
 
@@ -23,7 +22,7 @@ pool.on('error', (err) => {
 });
 
 pool.on('connect', () => {
-  console.log('✅ Connected to PostgreSQL database');
+  console.log(' Connected to PostgreSQL database');
 });
 
 export const initializeDatabase = async () => {
@@ -52,9 +51,9 @@ export const initializeDatabase = async () => {
       CREATE INDEX IF NOT EXISTS idx_transaction_hash ON harvest_records(transaction_hash);
       CREATE INDEX IF NOT EXISTS idx_indexed_on_chain ON harvest_records(indexed_on_chain);
     `);
-    console.log('✅ Database tables initialized successfully');
+    console.log(' Database tables initialized successfully');
   } catch (error) {
-    console.error('❌ Database initialization failed:', error);
+    console.error(' Database initialization failed:', error);
     throw error;
   } finally {
     client.release();

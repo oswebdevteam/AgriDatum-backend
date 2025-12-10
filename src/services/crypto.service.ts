@@ -32,9 +32,8 @@ export class CryptoService {
     };
   }
 
-  /**
-   * Sign harvest data
-   */
+  
+  // Sign harvest data
   static signData(data: HarvestData, privateKeyHex: string): string {
     const dataString = JSON.stringify(data);
     
@@ -48,9 +47,8 @@ export class CryptoService {
     return signature.toString('hex');
   }
 
-  /**
-   * Verify signature
-   */
+  
+  //Verify signature
   static verifySignature(
     data: HarvestData,
     signature: string,
@@ -77,20 +75,18 @@ export class CryptoService {
     }
   }
 
-  /**
-   * Hash data for integrity check
-   */
+  
+  // Hash data for integrity check
+   
   static hashData(data: HarvestData): string {
     const dataString = JSON.stringify(data);
     return crypto.createHash('sha256').update(dataString).digest('hex');
   }
 
-  /**
-   * Generate farmer address from public key (Cardano-style)
-   */
+  
+   // Generate farmer address from public key (Cardano-style)
   static generateFarmerAddress(publicKeyHex: string, isTestnet: boolean = true): string {
     try {
-      // Simple address generation - in production, use proper Cardano address derivation
       const hash = crypto.createHash('sha256').update(publicKeyHex).digest('hex');
       const prefix = isTestnet ? 'addr_test1' : 'addr1';
       return `${prefix}${hash.substring(0, 58)}`;
@@ -100,9 +96,9 @@ export class CryptoService {
     }
   }
 
-  /**
-   * Validate public key format
-   */
+  
+   //Validate public key format
+   
   static isValidPublicKey(publicKeyHex: string): boolean {
     try {
       if (!/^[0-9a-fA-F]+$/.test(publicKeyHex)) return false;
