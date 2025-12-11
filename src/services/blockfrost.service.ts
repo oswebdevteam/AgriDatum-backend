@@ -3,7 +3,6 @@ import * as bip39 from 'bip39';
 import { blake2b } from 'blakejs';  
 import { createRequire } from 'module';
 
-// Use CommonJS require for Cardano WASM
 const require = createRequire(import.meta.url);
 let CardanoWasm: any = null;
 
@@ -144,7 +143,6 @@ export class BlockfrostService {
       const inputValue = CSL.Value.new(CSL.BigNum.from_str(firstUtxo.amount[0].quantity));
       const inputAddress = CSL.Address.from_bech32(this.companyWallet.address);
       
-      // Try different input methods
       try {
         if (typeof txBuilder.add_regular_input === 'function') {
           txBuilder.add_regular_input(inputAddress, txInput, inputValue);
@@ -157,7 +155,6 @@ export class BlockfrostService {
         throw new Error(`Unable to add transaction input: ${inputError.message}`);
       }
 
-      // Add metadata
       const auxData = CSL.AuxiliaryData.new();
       const generalMetadata = CSL.GeneralTransactionMetadata.new();
       
@@ -198,12 +195,10 @@ export class BlockfrostService {
       const outputAddr = CSL.Address.from_bech32(this.companyWallet.address);
       txBuilder.add_change_if_needed(outputAddr);
 
-      //FIXED: Build and hash transaction properly with blakejs
       const txBody = txBuilder.build();
       const bodyBytes = txBody.to_bytes();
-
-      // Use blake2b-256 (32 bytes) for Cardano transaction hashing
-      const txHashBytes = blake2b(bodyBytes, null, 32); // 32 bytes = 256 bits
+       
+      const txHashBytes = blake2b(bodyBytes, null, 32); 
 
       const txHashObj = CSL.TransactionHash.from_bytes(Buffer.from(txHashBytes));
       
