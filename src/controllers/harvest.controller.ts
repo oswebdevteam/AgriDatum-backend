@@ -19,7 +19,6 @@ export class HarvestController {
         signature,
       } = req.body;
 
-      // Validate required fields
       if (!farmerId || !phoneNumber || !plotLocation || !cropType || !weightKg || !timestamp || !publicKey) {
         return res.status(400).json({
           error: 'Missing required fields',
@@ -27,12 +26,10 @@ export class HarvestController {
         });
       }
 
-      // Validate public key format
       if (!cryptoService.isValidPublicKey(publicKey)) {
         return res.status(400).json({ error: 'Invalid public key format' });
       }
 
-      // Verify signature if provided
       if (signature) {
         const harvestData = {
           farmerId,
@@ -54,13 +51,11 @@ export class HarvestController {
         }
       }
 
-      // Generate farmer address
       const farmerAddress = cryptoService.generateFarmerAddress(
         publicKey,
         process.env.BLOCKFROST_PROJECT_ID?.startsWith('preprod')
       );
 
-      // Submit to blockchain
       let transactionHash: string | null = null;
       try {
         transactionHash = await blockfrostService.submitHarvestToChain({
@@ -74,10 +69,8 @@ export class HarvestController {
         });
       } catch (blockchainError) {
         console.error('Blockchain submission failed:', blockchainError);
-        // Continue without blockchain if it fails - can retry later
       }
 
-      // Insert into database
       await client.query('BEGIN');
 
       const insertQuery = `
@@ -137,7 +130,6 @@ export class HarvestController {
         });
       }
 
-      // Fetch record from database
       let query: string;
       let values: any[];
 
@@ -157,7 +149,7 @@ export class HarvestController {
 
       const record = result.rows[0];
 
-      // Verify signature
+     
       const harvestData = {
         farmerId: record.farmer_id,
         phoneNumber: record.phone_number,
@@ -175,7 +167,7 @@ export class HarvestController {
           )
         : null;
 
-      // Verify blockchain transaction
+      
       let blockchainValid = false;
       let blockchainMetadata = null;
 
@@ -240,7 +232,6 @@ export class HarvestController {
         parseInt(offset as string),
       ]);
 
-      // Get total count
       const countQuery = 'SELECT COUNT(*) FROM harvest_records WHERE farmer_id = $1';
       const countResult = await pool.query(countQuery, [farmerId]);
 

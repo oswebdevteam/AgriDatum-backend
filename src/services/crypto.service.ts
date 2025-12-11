@@ -25,7 +25,6 @@ export class CryptoService {
       },
     });
 
-    // Convert Buffer to hex string
     return { 
       publicKey: publicKey.toString('hex'), 
       privateKey: privateKey.toString('hex') 
@@ -33,7 +32,6 @@ export class CryptoService {
   }
 
   
-  // Sign harvest data
   static signData(data: HarvestData, privateKeyHex: string): string {
     const dataString = JSON.stringify(data);
     
@@ -48,7 +46,6 @@ export class CryptoService {
   }
 
   
-  //Verify signature
   static verifySignature(
     data: HarvestData,
     signature: string,
@@ -76,7 +73,6 @@ export class CryptoService {
   }
 
   
-  // Hash data for integrity check
    
   static hashData(data: HarvestData): string {
     const dataString = JSON.stringify(data);
@@ -84,7 +80,6 @@ export class CryptoService {
   }
 
   
-   // Generate farmer address from public key (Cardano-style)
   static generateFarmerAddress(publicKeyHex: string, isTestnet: boolean = true): string {
     try {
       const hash = crypto.createHash('sha256').update(publicKeyHex).digest('hex');
@@ -97,7 +92,6 @@ export class CryptoService {
   }
 
   
-   //Validate public key format
    
   static isValidPublicKey(publicKeyHex: string): boolean {
     try {

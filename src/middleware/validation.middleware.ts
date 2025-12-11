@@ -17,7 +17,6 @@ export const validateHarvestSubmission = (
 
   const errors: string[] = [];
 
-  // Validate data inputed by user
   if (!farmerId || typeof farmerId !== 'string' || farmerId.trim().length === 0) {
     errors.push('farmerId is required and must be a non-empty string');
   }

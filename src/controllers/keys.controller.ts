@@ -28,7 +28,6 @@ export class KeysController {
         }
       }
       
-      // Only public key and address are returned to the client
       return res.json({
         success: true,
         publicKey,

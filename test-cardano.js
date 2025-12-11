@@ -9,7 +9,6 @@ try {
   console.log(' Library loaded successfully!');
   console.log(' Available exports:', Object.keys(CardanoWasm).slice(0, 10).join(', '), '...\n');
   
-  // Test key functions
   const tests = [
     'Bip32PrivateKey',
     'BaseAddress',
