@@ -12,13 +12,11 @@ dotenv.config();
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -30,30 +28,23 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Routes
 app.use('/api/harvest', harvestRoutes);
 app.use('/api/keys', keysRoutes)
-
-// Error handling
 app.use(errorHandler);
 
-// Initialize database and start server
+
 const startServer = async () => {
   try {
-    // Test database connection
     await pool.query('SELECT NOW()');
     console.log(' Database connected successfully');
 
-    // Initialize database tables
     await initializeDatabase();
 
-    // Verify blockchain configuration
     if (!process.env.BLOCKFROST_PROJECT_ID) {
       console.warn('  BLOCKFROST_PROJECT_ID not set - blockchain features disabled');
     } else {
       console.log(' Cardano integration enabled');
       
-      // Test blockchain service initialization
       try {
         const { blockfrostService } = await import('./services/blockfrost.service.js');
         const companyAddress = await blockfrostService.getCompanyAddress();
@@ -78,7 +69,6 @@ const startServer = async () => {
       console.warn('  COMPANY_WALLET_MNEMONIC not set - blockchain submissions will fail');
     }
 
-    // Start server
     app.listen(PORT, () => {
       console.log(` AgriDatum backend running on port ${PORT}`);
       console.log(` API endpoints:`);
