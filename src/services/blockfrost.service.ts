@@ -137,12 +137,33 @@ export class BlockfrostService {
 
       const txBuilder = CSL.TransactionBuilder.new(txBuilderCfg);
 
-      const firstUtxo = utxos[0];
-      const txHash = CSL.TransactionHash.from_bytes(Buffer.from(firstUtxo.tx_hash, 'hex'));
-      const txInput = CSL.TransactionInput.new(txHash, firstUtxo.tx_index);
-      const inputValue = CSL.Value.new(CSL.BigNum.from_str(firstUtxo.amount[0].quantity));
-      const inputAddress = CSL.Address.from_bech32(this.companyWallet.address);
-      
+//       const firstUtxo = utxos[0];
+
+//       if (!firstUtxo) {
+//   throw new Error('No UTXOs available for this address');
+// }
+
+// if (!firstUtxo.amount || firstUtxo.amount.length === 0) {
+//   throw new Error('UTXO has no amount data');
+// }
+//       const txHash = CSL.TransactionHash.from_bytes(Buffer.from(firstUtxo.tx_hash, 'hex'));
+//       const txInput = CSL.TransactionInput.new(txHash, firstUtxo.tx_index);
+//       const inputValue = CSL.Value.new(CSL.BigNum.from_str(firstUtxo.amount[0].quantity));
+//       const inputAddress = CSL.Address.from_bech32(this.companyWallet.address);
+    
+
+  const firstUtxo = utxos[0];
+  const firstAmount = firstUtxo?.amount?.[0];
+
+if (!firstUtxo || !firstAmount) {
+  throw new Error('Invalid UTXO data');
+}
+
+const txHash = CSL.TransactionHash.from_bytes(Buffer.from(firstUtxo.tx_hash, 'hex'));
+const txInput = CSL.TransactionInput.new(txHash, firstUtxo.tx_index);
+const inputValue = CSL.Value.new(CSL.BigNum.from_str(firstAmount.quantity));
+const inputAddress = CSL.Address.from_bech32(this.companyWallet.address);
+
       try {
         if (typeof txBuilder.add_regular_input === 'function') {
           txBuilder.add_regular_input(inputAddress, txInput, inputValue);
@@ -198,7 +219,7 @@ export class BlockfrostService {
       const txBody = txBuilder.build();
       const bodyBytes = txBody.to_bytes();
        
-      const txHashBytes = blake2b(bodyBytes, null, 32); 
+      const txHashBytes = blake2b(bodyBytes, undefined, 32); 
 
       const txHashObj = CSL.TransactionHash.from_bytes(Buffer.from(txHashBytes));
       
