@@ -2,7 +2,7 @@ cat > .gitignore << EOL
 # Dependencies
 node_modules/
 package-lock.json
-bun.lock
+pnpm-lock.yaml
 
 # Environment variables
 .env
